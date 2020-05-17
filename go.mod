@@ -7,4 +7,4 @@ require (
 	xiao v0.0.0
 )
 
-replace xiao => ../../ws/src/xiao
+replace xiao => ../../xiao
