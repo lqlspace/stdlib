@@ -1,11 +1,10 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"testing"
-
-	"xiao/common/logx"
 )
 
 const (
@@ -13,10 +12,10 @@ const (
 )
 
 func TestServerSimple_ServeSimple(t *testing.T) {
-	ss := new(ServerSimple)
+	ss := new(SimpleConn)
 
-	ss.ServeSimple()
+	ss.AddRoutes()
 
-	logx.Infof("Starting SimpleConnect server at  : %s", ADDR)
+	fmt.Printf("Starting SimpleConnect server at  : %s", ADDR)
 	log.Fatal(http.ListenAndServe(ADDR, nil))
 }
