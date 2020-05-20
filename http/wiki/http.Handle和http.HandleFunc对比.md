@@ -1,7 +1,7 @@
 ## http.Handle和http.HandleFunc区别：
 两者区别在第二个参数  
 
-http.Handler第二个参数是Handler接口，里面包含一个方法，实现该接口的对象均可作为实参：  
+http.Handle第二个参数是Handler接口，里面包含一个方法，实现该接口的对象均可作为实参：  
 ```cassandraql
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
@@ -25,5 +25,12 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
 	f(w, r)
 }
 ```
+
+  
+
+
+
+
+
 
 
