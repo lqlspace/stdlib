@@ -1,0 +1,37 @@
+## io.Reader和io.Writer和io.Closer 定义
+io.Reader和io.Writer是两个接口，分别为调用者提供数据和输出数据，io.Closer接口则用来关闭对象，定义如下：
+```cassandraql
+// 此处p用来接收Reader中的数据，类型为字节数组
+type Reader interface {
+	Read(p []byte) (n int, err error)
+}
+
+// 此处p是写入Writer的数据源，类型为字节数组
+type Writer interface {
+	Write(p []byte) (n int, err error)
+}
+
+type Closer interface {
+	Close() error
+}
+```
+
+## bytes.Reader定义 (注：没有bytes.Writer定义)
+bytes.Reader是一个结构体，实现了io.Reader（只读）、io.Seek等，内部有字节数组类型的缓存，以及索引
+```cassandraql
+type Reader struct {
+	s        []byte
+	i        int64 // current reading index
+	prevRune int   // index of previous rune; or < 0
+}
+```
+
+## bytes.Buffer定义
+bytes.Buffer是一个结构体，实现了io.Reader和io.Writer方法
+```cassandraql
+type Buffer struct {
+	buf      []byte // contents are the bytes buf[off : len(buf)]
+	off      int    // read at &buf[off], write at &buf[len(buf)]
+	lastRead readOp // last read operation, so that Unread* can work correctly.
+}
+```

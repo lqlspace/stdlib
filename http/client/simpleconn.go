@@ -27,28 +27,29 @@ func (cs *SimpleConn) GetUrl() (string, error) {
 }
 
 
-func (cs *SimpleConn) GetHeader()  (string, error) {
+func (cs *SimpleConn) GetHeader()  (*http.Response, error) {
 	urlPath := util.ADDRESS + `/header`
 
 	req, err := http.NewRequest("Get", urlPath, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	req.Header.Set("Authorization", "abcdefg")
 	req.Header.Set("name", "allen")
 
-	rsp, err := http.DefaultClient.Do(req)
-	if err !=  nil {
-		return "", err
-	}
-	defer rsp.Body.Close()
+	return http.DefaultClient.Do(req)
+}
 
-	body, err := ioutil.ReadAll(rsp.Body)
-	if err !=  nil {
-		return "", err
+
+func (cs *SimpleConn) GetHeaderByHead() (*http.Response, error) {
+	urlPath  := util.ADDRESS + `/header`
+
+	rsp, err := http.Head(urlPath)
+	if err != nil {
+		return nil, err
 	}
 
-	return string(body), err
+	return rsp, err
 }
 
 

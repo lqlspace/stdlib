@@ -17,12 +17,27 @@ func TestSimpleConn_GetUr(t *testing.T) {
 func TestSimpleConn_GetHeader(t *testing.T) {
 	sc := new(SimpleConn)
 
-	data, err := sc.GetHeader()
+	rsp, err := sc.GetHeader()
 	assert.Nil(t, err)
+	assert.NotNil(t, rsp, rsp.Body)
 
-	t.Log(data)
+	defer rsp.Body.Close()
+
+	t.Logf("rsp = %#v", rsp)
+
+
 }
 
+//http.Head方法，http.Body为http.noBody{}
+func TestSimpleConn_GetHeaderByHead(t *testing.T) {
+	sc := new(SimpleConn)
+
+	rsp, err := sc.GetHeaderByHead()
+	assert.Nil(t, err)
+	assert.Nil(t, rsp.Body)
+
+	t.Logf("rsp = %#v", rsp)
+}
 
 func TestSimpleConn_GetMethod(t *testing.T) {
 	sc := new(SimpleConn)
