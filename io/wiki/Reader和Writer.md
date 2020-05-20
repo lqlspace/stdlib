@@ -35,3 +35,56 @@ type Buffer struct {
 	lastRead readOp // last read operation, so that Unread* can work correctly.
 }
 ```
+
+## 字符串类型实现io.Reader/io.Writer接口
+字符串有个专门的struct存放要Read的string:
+```cassandraql
+type Reader struct {
+	s        string
+	i        int64 // current reading index
+	prevRune int   // index of previous rune; or < 0
+}
+```
+其中s为数据源，其初始化使用strings.NewReader函数：
+```cassandraql
+func NewReader(s string) *Reader { return &Reader{s, 0, -1} }
+```
+Read方法实现如下：
+```cassandraql
+func (r *Reader) Read(b []byte) (n int, err error) {
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
+	}
+	r.prevRune = -1
+	n = copy(b, r.s[r.i:])
+	r.i += int64(n)
+	return
+}
+```
+
+## bytes实现io.Reader/io.Writer接口
+bytes及字节数组,有个专门的结构体来存放要Read的bytes:
+```cassandraql
+type Reader struct {
+	s        []byte
+	i        int64 // current reading index
+	prevRune int   // index of previous rune; or < 0
+}
+```
+其中s为数据源，其初始化使用bytes.NewReader函数：
+```cassandraql
+func NewReader(b []byte) *Reader { return &Reader{b, 0, -1} }
+```
+Read方法实现如下：
+```cassandraql
+func (r *Reader) Read(b []byte) (n int, err error) {
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
+	}
+	r.prevRune = -1
+	n = copy(b, r.s[r.i:])
+	r.i += int64(n)
+	return
+}
+```
+
