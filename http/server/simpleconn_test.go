@@ -7,9 +7,6 @@ import (
 	"testing"
 )
 
-const (
-	ADDR = `:8080`
-)
 
 func TestServerSimple_ServeSimple(t *testing.T) {
 	ss := new(SimpleConn)
