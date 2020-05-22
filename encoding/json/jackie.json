@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Jackie",
+    "age": 20,
+    "emails": ["jack@gmail.com", "jackie@gmail.com"],
+    "male": true
+  },
+  {
+    "name": "Allen",
+    "age": 24,
+    "emails": ["allen@gmail.com", "hallen@gmail.com"],
+    "male": false
+  }
+]

@@ -2,6 +2,7 @@ package jsonx
 
 import (
 	"encoding/json"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -195,4 +196,67 @@ func  TestSliceToJson(t  *testing.T) {
 	assert.Nil(t, err)
 	assert.JSONEq(t, `["22","33"]`, string(sbs))
 	t.Log(string(sbs))
+}
+
+
+// 当不确定Json字段时，应使用Map来接收
+func TestJsonToMap(t *testing.T) {
+	bytes := []byte(`
+		{
+			"name": "Jackie",
+			"age": 20,
+			"emails": ["allen@gmail.com", "jackie@gmail.com"],
+			"male": true 
+		}
+	`)
+
+	js := make(map[string]interface{})
+	err := json.Unmarshal(bytes, &js)
+	assert.Nil(t, err)
+
+	for key, val := range js {
+		t.Logf("%s : %v\n", key, val)
+	}
+
+	//注***： 此处go并不知道json里数据类型，所以均以interface{}类型替代，如果[]string会报错；
+	emails := js["emails"].([]interface{})
+
+	t.Logf("first email: %s\n", emails[0].(string))
+	t.Logf("second email: %s\n", emails[1].(string))
+}
+
+
+// 从json文件中对json流
+func TestFileToJson(t *testing.T) {
+	fReader, err  := os.Open("jackie.json")
+	assert.Nil(t, err)
+
+	person := make([]map[string]interface{}, 0)
+	err = json.NewDecoder(fReader).Decode(&person)
+	assert.Nil(t, err)
+
+	t.Logf("person = %v\n", person)
+}
+
+
+// 写Json数据至json文件
+func TestJsonToFile(t *testing.T) {
+	p := []*struct{
+		Name string `json:"name"`
+		Age int64 `json:"age"`
+	}{
+		{
+			Name: "allen",
+			Age: 20,
+		},
+		{
+			Name: "jakie",
+			Age: 22,
+		},
+	}
+
+	fWriter, err := os.Create("output.json")
+	assert.Nil(t, err)
+	err = json.NewEncoder(fWriter).Encode(p)
+	assert.Nil(t, err)
 }
