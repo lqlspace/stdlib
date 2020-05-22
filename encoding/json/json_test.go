@@ -167,3 +167,16 @@ func TestSkipField(t *testing.T) {
 	err = json.Unmarshal(tBytes, &tutor)
 	assert.Nil(t,  err)
 }
+
+//Map转换成json跟struct转换后的数据一致，但key的顺序不一定
+func TestMapsToJson(t *testing.T) {
+	m := make(map[string]interface{})
+	m["name"] = "Jackie"
+	m["age"] = 20
+	m["emails"] = []string{"allen@gmail.com", "Jackie@gamil.com"}
+
+	mBytes, err := json.Marshal(m)
+	assert.Nil(t, err)
+
+	t.Log(string(mBytes))
+}
