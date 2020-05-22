@@ -11,6 +11,8 @@
 4、对于指针变量来说，Marshal时传递p或&p均可，Unmarshal时如果传递了未初始化的p，
 则error，传&p则不会；
 
+5、Map转换成json后，各字段顺序不确定 
+
 ```
 
 ## 结构体struct tag

@@ -180,3 +180,19 @@ func TestMapsToJson(t *testing.T) {
 
 	t.Log(string(mBytes))
 }
+
+
+//Slice转化成Json，
+func  TestSliceToJson(t  *testing.T) {
+	sliceInt := []int64{22, 33}
+	sBytes, err := json.Marshal(sliceInt)
+	assert.Nil(t, err)
+	assert.JSONEq(t, `[22,33]`, string(sBytes))
+	t.Log(string(sBytes))
+
+	sliceStr := []string{"22", "33"}
+	sbs, err := json.Marshal(sliceStr)
+	assert.Nil(t, err)
+	assert.JSONEq(t, `["22","33"]`, string(sbs))
+	t.Log(string(sbs))
+}
