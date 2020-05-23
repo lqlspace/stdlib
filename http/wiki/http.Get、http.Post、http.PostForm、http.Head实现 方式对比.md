@@ -6,7 +6,7 @@ func Get(url string) (resp *Response, err error) {
 	return DefaultClient.Get(url)
 }
 
-// http.Post，入参有三个，其中第二个参数常见如（application/json;charset=utf8），第三入参为io.Reader接口
+// http.Post，入参有三个，其中第二个参数常见如（application/json;charset=utf-8），第三入参为io.Reader接口
 func Post(url, contentType string, body io.Reader) (resp *Response, err error) {
 	return DefaultClient.Post(url, contentType, body)
 }

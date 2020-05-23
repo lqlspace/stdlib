@@ -2,6 +2,7 @@ package client
 
 import (
 	"io/ioutil"
+	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,4 +39,43 @@ func TestFormObj_UploadFile(t *testing.T) {
 
 	// 传递的纯字符串，直接打印
 	t.Logf("%s\n", string(body))
+}
+
+
+func TestFormObj_UploadJpg(t *testing.T) {
+	fo := new(FormObj)
+
+	urlPath := util.ADDRESS + `/save/jpg`
+	rsp, err := fo.UploadJpg("doc/image.jpg", urlPath)
+	assert.Nil(t, err)
+
+	defer rsp.Body.Close()
+
+	if rsp.StatusCode != http.StatusOK {
+		t.Errorf("response error")
+	} else {
+		body, err := ioutil.ReadAll(rsp.Body)
+		assert.Nil(t, err)
+
+		t.Logf("%s\n", string(body))
+	}
+}
+
+
+func TestFormObj_UploadVideo(t *testing.T) {
+	fo := new(FormObj)
+
+	urlPath := util.ADDRESS + `/save/video`
+	rsp, err := fo.UploadVideo("doc/sunrise.mp4", urlPath)
+	assert.Nil(t, err)
+
+	defer rsp.Body.Close()
+	if rsp.StatusCode !=  http.StatusOK {
+		t.Errorf("upload video failed: %s\n", err)
+	} else {
+		body, err := ioutil.ReadAll(rsp.Body)
+		assert.Nil(t, err)
+
+		t.Logf("%s\n", string(body))
+	}
 }

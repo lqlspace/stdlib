@@ -68,3 +68,65 @@ func (fo *FormObj) UploadFile(filePath, urlPath string) (*http.Response, error) 
 
 	return http.DefaultClient.Do(req)
 }
+
+
+func (fo *FormObj) UploadJpg(filePath, urlPath string) (*http.Response, error) {
+	f, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	var body bytes.Buffer
+	multipartWriter := multipart.NewWriter(&body)
+	fileWriter, err := multipartWriter.CreateFormFile("file", path.Base(filePath))
+	if err !=  nil {
+		return nil, err
+	}
+
+	if _, err := io.Copy(fileWriter, f); err != nil {
+		return nil, err
+	}
+
+	multipartWriter.Close()
+
+	req, err := http.NewRequest("POST", urlPath, &body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", multipartWriter.FormDataContentType())
+
+	return http.DefaultClient.Do(req)
+}
+
+
+
+func (fo *FormObj) UploadVideo(filePath, urlPath string) (*http.Response, error) {
+	file, err :=  os.Open(filePath)
+	if err != nil {
+		return nil,  err
+	}
+
+	var body bytes.Buffer
+	writer :=  multipart.NewWriter(&body)
+	fileWriter, err := writer.CreateFormFile("video_file", path.Base(filePath))
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := io.Copy(fileWriter, file); err != nil {
+		return nil, err
+	}
+
+	writer.Close()
+
+	req, err := http.NewRequest("POST", urlPath, &body)
+	if err !=  nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	return http.DefaultClient.Do(req)
+
+}
