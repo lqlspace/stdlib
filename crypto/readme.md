@@ -15,3 +15,7 @@ AES的block size是16bytes，所以AES采用的一定是pkcs7
 一般stream cipher算法每bit或byte逐个进行加密，密文和明文长度保持一致；block cipher
 算法以blocksize为单位进行加密，加密后的长度比明文多padding个长度；
 
+## 当明文长度是blockSize的整数倍时，是否仍需要padding?
+一般都加上，即添加一个blockSize大小的padding，值为blockSize;
+所以padding的取值范围一个是(1,blockSize]
+
