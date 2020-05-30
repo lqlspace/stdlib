@@ -19,3 +19,5 @@ AES的block size是16bytes，所以AES采用的一定是pkcs7
 一般都加上，即添加一个blockSize大小的padding，值为blockSize;
 所以padding的取值范围一个是(1,blockSize]
 
+## 有关GCM的问题回答链接
+[AES-GCM](https://crypto.stackexchange.com/questions/17999/aes256-gcm-can-someone-explain-how-to-use-it-securely-ruby?answertab=votes#tab-top)
